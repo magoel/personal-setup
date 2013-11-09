@@ -4,7 +4,7 @@ colorscheme evening
 set tabstop=4
 set shiftwidth=4
 
-#if match($TERM,"screen")!=-1
-#        set term=xterm
-#endif
-#
+"if match($TERM,"screen")!=-1
+"        set term=xterm
+"endif
+"

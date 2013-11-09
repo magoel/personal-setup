@@ -1,0 +1,10 @@
+colorscheme evening
+:nnoremap  :cscope f c <cword>
+:nnoremap  :cscope f s <cword>
+set tabstop=4
+set shiftwidth=4
+
+#if match($TERM,"screen")!=-1
+#        set term=xterm
+#endif
+#

@@ -1,7 +1,7 @@
 #!/bin/csh -f 
 
 #create backup of old-preference files
-set script_dir = `dirname $0`
+set script_dir = `dirname $argv[0]`
 
 pushd $HOME
 mkdir -p dotfiles.bak

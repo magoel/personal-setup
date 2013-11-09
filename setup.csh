@@ -1,19 +1,13 @@
 #!/bin/csh -f 
 
-#install screen preferences
+set script_dir = `dirname $0`
+pushd $script_dir;
+source core-setup.sh
+# intsall utility scripts
 
 
-#install vim-preferences
 
 
-#install vim-slime
-
-#install .cshrc 
+source preference-setup.csh
 
 
-#install aliases
-
-
-#install utility-scripts
-
-#

@@ -1,4 +1,4 @@
-colorscheme evening
+colorscheme desert
 :nnoremap  :cscope f c <cword>
 :nnoremap  :cscope f s <cword>
 set tabstop=4

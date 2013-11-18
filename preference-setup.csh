@@ -1,7 +1,14 @@
 #!/bin/csh -f 
 
 set script_dir = `dirname $0`
-set script_dir=`echo $PWD/$script_dir`
+
+if (-d $PWD/$script_dir) then 
+# relative path
+set script_dir = `echo $PWD/$script_dir`
+else
+#absolute path
+endif 
+
 
 #create backup of old-preference files
 \rm -rf ~/dotfiles.bak
@@ -48,7 +55,6 @@ pushd $HOME
 ln -sb ~/dotfiles/.screenrc .
 ln -sb ~/dotfiles/.gdbinit . 
 ln -sb ~/dotfiles/.vimrc  .
-ln -sb ~/dotfiles/.gvimrc .
 ln -sb ~/dotfiles/.cshrc . 
 ln -sf ~/dotfiles/.aliases .
 popd

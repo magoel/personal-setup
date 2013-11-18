@@ -1,0 +1,4 @@
+alias d 'dirs -v'
+alias k9 'ps -u magoel | grep "\!*" | sed "s#^[\t ]\+##" | sed -n "s#[ \t]\+# #gp" | cut -d" " -f1 | xargs kill -9'
+alias pd 'pusdh'
+alias po 'popd'

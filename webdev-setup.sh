@@ -5,7 +5,6 @@
 # Install nvm: node-version manager
 # https://github.com/creationix/nvm
 export script_dir=`dirname $0`
-export script_dir=`echo $PWD/$script_dir`
 pushd $script_dir
 source ./core-setup.sh
 popd

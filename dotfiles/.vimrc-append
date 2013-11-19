@@ -3,6 +3,9 @@ colorscheme desert
 :nnoremap  :cscope f s <cword>
 set tabstop=4
 set shiftwidth=4
+set nu
+set hlsearch
+set incsearch
 
 "if match($TERM,"screen")!=-1
 "        set term=xterm

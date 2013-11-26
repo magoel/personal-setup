@@ -20,80 +20,80 @@ function error_exit {
 
 backup_dir="/home/$USER/dotfiles.bak.$$.$RANDOM";
 function create_backup_dir {
-	echo "Creating backup dir" 
-	count=0;
-	while  [ -d $backup_dir ] && [ $count -lt 10 ] ; do 
-		backup_dir="/home/$USER/dotfiles.bak.$$.$RANDOM";
-		count=$((count+1));
-	done
-	if [ $count -ge 10 ]; then 
-		error_exit <<- _EMSG_
-		Failed to find a suitable backup-dir \n
-		Try cleaning up existing directory like ~/dotfiles.bak.[0-9]+.[0-9]+"\n
-		And then run script again\n
-		_EMSG_
+	echo -n "Suggest a dotfiles-dir [$HOME/dotfiles.bak] > "
+	read backup_dir;
+	if [ ! -n "$backup_dir" ]; then 
+		backup_dir="/home/$USER/dotfiles.bak"
+	else
+		parent_dir=$(dirname $backup_dir);
+		if [ ! -d $parent_dir ]; then 
+			error_exit "$parent_dir doesn't exist"
+		fi
+		pushd $(dirname $backup_dir) 
+		backup_dir=$PWD/$(basename $backup_dir);
+		popd;
 	fi
 	mkdir -p $backup_dir;
 }
 
 
-dotfiles_dir="/home/$USER/dotfiles.$$.$RANDOM"
+dotfiles_dir="/home/$USER/dotfiles"
 function create_dotfiles_dir {
-	echo "Creating dotfiles dir"
-	count=0;
-	while [ -d dotfiles_dir ]  && [ $count -lt 10 ] ; do
-		dotfiles_dir="/home/$USER/dotfiles.$$.$RANDOM"
-		count=$((count+1));
-	done
-	if [ $count -ge 10 ]; then 
-		error_exit <<- _EMSG_
-		Failed to find a suitable dotfiles-dir\n
-		Try cleaning up existing directory like ~/dotfiles.[0-9]+.[0-9]+\n
-		And then run script again\n
-		_EMSG_
+	echo -n "Suggest a dotfiles-dir [$HOME/dotfiles] > "
+	read dotfiles_dir;
+	if [ ! -n "$dotfiles_dir" ]; then 
+		dotfiles_dir="/home/$USER/dotfiles"
+	else
+		parent_dir=$(dirname $dotfiles_dir);
+		if [ ! -d $parent_dir ]; then 
+			error_exit "$parent_dir doesn't exist"
+		fi
+		pushd $(dirname $dotfiles_dir) 
+		dotfiles_dir=$PWD/$(basename $dotfiles_dir);
+		popd;
 	fi
-	cp -rf $script_dir/dotfiles $dotfiles_dir
+	mkdir -p $dotfiles_dir
 }
 
 
 
 function backup_vim {
 	pushd /home/$USER;
-	mv  .vimrc $1/.
-	mv  .vim $1/.
+	mv  $(readlink -fn .vimrc) $1/.
+	mv  $(readlink -fn .vim) $1/.
 	popd
 }
 
 function backup_emacs {
 	pushd /home/$USER;
-	mv .emacs.d $1/.
+	mv $(readlink -fn .emacs.d) $1/.
 	popd
 }
 
 function backup_bash {
 	pushd /home/$USER;
-	mv .bashrc $1/.
-	mv .bash_profile $1/. 
-	mv .bashrc_custom $1/. 
+	mv $(readlink -fn .bashrc) $1/.
+	mv $(readlink -fn .bash_profile) $1/. 
+	mv $(readlink -fn .bashrc_custom) $1/. 
 	popd
 }
 
 function backup_screen {
 	pushd /home/$USER;
-	mv  .screenrc $1/.
+	mv  $(readlink -fn .screenrc) $1/.
 	popd
 }
 
 function backup_cshrc {
 	pushd /home/$USER;
-	mv .cshrc $1/. 
-	mv .aliases $1/.
+	mv $(readlink -fn .cshrc) $1/. 
+	mv $(readlink -fn .aliases) $1/.
 	popd
 }
 
 function backup_gdb {
 	pushd /home/$USER;
-	mv .gdbinit $1/.
+	mv $(readlink -fn .gdbinit) $1/.
 	popd
 }
 
@@ -110,6 +110,8 @@ function confirm_backup {
 
 function configure_vim {
 	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.vimrc $1/.
+	cp -rf $script_dir/dotfiles/.vim $1/.
 	ln -s $1/.vimrc .  
 	ln -s $1/.vim . 
 	popd
@@ -117,12 +119,16 @@ function configure_vim {
 
 function configure_emacs {
 	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.emacs.d $1/.
 	ln -s $1/.emacs.d . 
 	popd
 }
 
 function configure_bash {
 	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.bashrc $1/.
+	cp -rf $script_dir/dotfiles/.bash_profile $1/.
+	cp -rf $script_dir/dotfiles/.bashrc_custom $1/.
 	ln -s $1/.bashrc .
 	ln -s $1/.bash_profile . 
 	ln -s $1/.bashrc_custom . 
@@ -131,12 +137,15 @@ function configure_bash {
 
 function configure_screen {
 	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.screenrc $1/.
 	ln -s  $1/.screenrc .
 	popd
 }
 
 function configure_cshrc {
 	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.cshrc $1/.
+	cp -rf $script_dir/dotfiles/.aliases $1/.
 	ln -s $1/.cshrc . 
 	ln -s $1/.aliases .
 	popd
@@ -144,6 +153,7 @@ function configure_cshrc {
 
 function configure_gdb {
 	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.gdbinit $1/.
 	ln -s $1/.gdbinit 
 	popd
 }

@@ -4,10 +4,8 @@
 
 # Install nvm: node-version manager
 # https://github.com/creationix/nvm
-export script_dir=`dirname $0`
-pushd $script_dir
-source ./core-setup.sh
-popd
+script_dir=$(dirname $0)
+pushd $HOME
 curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 
 # Load nvm and install latest production node
@@ -33,13 +31,4 @@ sudo apt-get install -y emacs24-nox emacs24-el emacs24-common-non-dfsg
 # https://toolbelt.heroku.com/debian
 wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 
-cd $HOME
-if [ -d .emacs.d/ ]; then
-    mv .emacs.d .emacs.d~
-fi
-ln -sf dotfiles/.emacs.d .
-
-ln -sb dotfiles/.bash_profile .
-ln -sb dotfiles/.bashrc .
-ln -sb dotfiles/.bashrc_custom .
-
+popd

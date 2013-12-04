@@ -94,14 +94,6 @@ function backup_cshrc {
 	popd
 }
 
-function backup_modelsim {
-	pushd /home/$USER;
-	mv $(readlink -fn .cshrc.model) $1/. 
-	mv $(readlink -fn .cshrc.mentor) $1/. 
-	mv $(readlink -fn .model.alias ) $1/.
-	popd
-}
-
 function backup_gdb {
 	pushd /home/$USER;
 	mv $(readlink -fn .gdbinit) $1/.
@@ -167,16 +159,6 @@ function configure_cshrc {
 	popd
 }
 
-function configure_modelsim {
-	pushd /home/$USER;
-	cp -rf $script_dir/dotfiles/.cshrc.model $1/.
-	cp -rf $script_dir/dotfiles/.cshrc.mentor $1/.
-	cp -rf $script_dir/dotfiles/.model.alias $1/.
-	ln -s $1/.cshrc.model . 
-	ln -s $1/.cshrc.mentor . 
-	ln -s $1/.model.alias .
-	popd
-}
 
 function configure_gdb {
 	pushd /home/$USER;
@@ -214,8 +196,6 @@ confirm_configuration screen backup_screen configure_screen
 confirm_configuration emacs backup_emacs configure_emacs
 
 confirm_configuration csh backup_cshrc configure_cshrc
-
-confirm_configuration modelsim backup_modelsim configure_modelsim
 
 echo "Backup is created in $backup_dir"
 echo "Dotfiles are created in $dotfiles_dir"

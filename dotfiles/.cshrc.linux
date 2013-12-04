@@ -1,0 +1,59 @@
+#!/bin/csh -f
+#echo " ######### .cshrc(Linux) ######### "
+#
+# "noclobber" prevents accidental replacement of files by use of ">"
+# redirection. ">!" will replace a file even with noclobber set.
+set noclobber
+#
+# filename completion (shelltool only), history limit
+set filec
+set ignoreeof
+set nobeep
+set autoexpand
+set autolist
+set cdpath = (.. ~)
+set filec
+set fignore = ( .o )
+set histdup = prev
+set history=200
+set savehist=100
+limit coredumpsize 0
+limit stacksize u
+#set deftty=wy50
+#
+# umask value restricts permissions on created directories.  027 says turn
+# off write permission for group members, and all permissions for others.
+# umask value is XORed with mode 777
+umask 022
+
+if ($?PATH == 0) then
+	setenv PATH = "";
+endif
+
+if ($?LD_LIBRARY_PATH == 0) then 
+	setenv LD_LIBRARY_PATH = "";
+endif
+
+
+if ($?GCC_LD_LIBRARY_PATH == 0) then 
+	setenv GCC_LD_LIBRARY_PATH = "";
+endif
+
+set host = `hostname`
+#alias cp        'cp -i'
+#alias mv        'mv -i'
+#alias rm        'rm -i'
+
+#          skip remaining setup if not an interactive shell
+if ($?USER == 0 || $?prompt == 0) exit
+set prompt = "`whoami`@`hostname`[\!] "
+#alias setprompt 'echo -n '
+
+#alias cd        'cd \!* ; setprompt'
+#alias chdir     'chdir \!* ; setprompt'
+
+#######   ****SETENV***   ########
+setenv SHELL            '/bin/tcsh'
+setenv GCC_LD_LIBRARY_PATH "/usr/local/lib:${GCC_LD_LIBRARY_PATH}"
+setenv LD_LIBRARY_PATH "/usr/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
+set path = (/usr/sbin /bin /usr/bin /usr/local/bin /usr/X11R6/bin . /sbin $path)

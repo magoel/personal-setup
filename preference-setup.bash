@@ -87,7 +87,18 @@ function backup_screen {
 function backup_cshrc {
 	pushd /home/$USER;
 	mv $(readlink -fn .cshrc) $1/. 
+	mv $(readlink -fn .cshrc.env) $1/. 
+	mv $(readlink -fn .cshrc.linux) $1/. 
+	mv $(readlink -fn .mycshrc) $1/. 
 	mv $(readlink -fn .aliases) $1/.
+	popd
+}
+
+function backup_modelsim {
+	pushd /home/$USER;
+	mv $(readlink -fn .cshrc.model) $1/. 
+	mv $(readlink -fn .cshrc.mentor) $1/. 
+	mv $(readlink -fn .model.alias ) $1/.
 	popd
 }
 
@@ -98,7 +109,6 @@ function backup_gdb {
 }
 
 function confirm_backup {
-	clear
 	echo -n "Shall I backup preference for $1? [y/n] : ";
 	read confirm ;
 	case $confirm in 
@@ -145,9 +155,26 @@ function configure_screen {
 function configure_cshrc {
 	pushd /home/$USER;
 	cp -rf $script_dir/dotfiles/.cshrc $1/.
+	cp -rf $script_dir/dotfiles/.cshrc.env $1/.
+	cp -rf $script_dir/dotfiles/.cshrc.linux $1/.
+	cp -rf $script_dir/dotfiles/.mycshrc $1/.
 	cp -rf $script_dir/dotfiles/.aliases $1/.
 	ln -s $1/.cshrc . 
+	ln -s $1/.cshrc.env . 
+	ln -s $1/.cshrc.linux . 
+	ln -s $1/.mycshrc . 
 	ln -s $1/.aliases .
+	popd
+}
+
+function configure_modelsim {
+	pushd /home/$USER;
+	cp -rf $script_dir/dotfiles/.cshrc.model $1/.
+	cp -rf $script_dir/dotfiles/.cshrc.mentor $1/.
+	cp -rf $script_dir/dotfiles/.model.alias $1/.
+	ln -s $1/.cshrc.model . 
+	ln -s $1/.cshrc.mentor . 
+	ln -s $1/.model.alias .
 	popd
 }
 
@@ -161,13 +188,14 @@ function configure_gdb {
 
 
 function confirm_configuration {
-	clear
-	echo -n "Shall I configure $1? [y/n] : ";
+	echo -n "Shall I configure for $1? [y/n] : ";
 	read confirm ;
 	case $confirm in 
-		y | Y ) $2 $dotfiles_dir ;;
+		y | Y ) 
+				confirm_backup $1 $2
+				$3 $dotfiles_dir ;;
 		n | N ) echo "Skipping configuration for $1" ;;
-		* ) confirm_configuration $1 $2;;
+		* ) confirm_configuration $1 $2 $3;;
 	esac
 }
 
@@ -175,23 +203,19 @@ trap clean_up SIGHUP SIGINT SIGTERM;
 create_backup_dir
 create_dotfiles_dir
 
-confirm_backup vim backup_vim
-confirm_configuration vim configure_vim
+confirm_configuration vim backup_vim configure_vim
 
-confirm_backup bash backup_bash
-confirm_configuration bash configure_bash
+confirm_configuration bash backup_bash configure_bash
 
-confirm_backup gdb backup_gdb
-confirm_configuration gdb configure_gdb
+confirm_configuration gdb backup_gdb configure_gdb
 
-confirm_backup screen backup_screen
-confirm_configuration screen configure_screen
+confirm_configuration screen backup_screen configure_screen
 
-confirm_backup emacs backup_emacs
-confirm_configuration emacs configure_emacs
+confirm_configuration emacs backup_emacs configure_emacs
 
-confirm_backup csh backup_cshrc
-confirm_configuration csh configure_cshrc
+confirm_configuration csh backup_cshrc configure_cshrc
+
+confirm_configuration modelsim backup_modelsim configure_modelsim
 
 echo "Backup is created in $backup_dir"
 echo "Dotfiles are created in $dotfiles_dir"

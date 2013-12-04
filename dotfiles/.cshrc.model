@@ -1,0 +1,19 @@
+#!/bin/csh -f 
+setenv PRODDIR '/u/prod'
+setenv PLATFORM         `$PRODDIR/bin/vco56`                  
+setenv PLATFORM2        `$PRODDIR/bin/vco56`                  
+setenv PLATFORM_2       `$PRODDIR/bin/vco56`
+
+if ( -e $HOME/.cshrc.mentor) then 
+	source $HOME/.cshrc.mentor ;
+endif
+
+
+setenv LM_LICENSE_FILE 1700@licsvr:1717@wv-lic-03.wv.mentorg.com
+
+
+if ( -e ~/.model.alias ) then 
+	source ~/.model.alias
+endif
+
+

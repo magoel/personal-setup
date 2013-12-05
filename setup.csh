@@ -7,10 +7,3 @@ source core-setup.sh
 source preference-setup.csh
 popd
 
-# intsall utility scripts
-mkdir -p $HOME/Trash
-mkdir -p $HOME/Scripts
-
-
-
-

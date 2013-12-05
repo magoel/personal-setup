@@ -27,16 +27,16 @@ limit stacksize u
 umask 022
 
 if ($?PATH == 0) then
-	setenv PATH = "";
+	setenv PATH  "";
 endif
 
 if ($?LD_LIBRARY_PATH == 0) then 
-	setenv LD_LIBRARY_PATH = "";
+	setenv LD_LIBRARY_PATH  "";
 endif
 
 
 if ($?GCC_LD_LIBRARY_PATH == 0) then 
-	setenv GCC_LD_LIBRARY_PATH = "";
+	setenv GCC_LD_LIBRARY_PATH  "";
 endif
 
 set host = `hostname`
